@@ -1,0 +1,15 @@
+--- Main_shifr.py
++++ Main_shifr.py
+@@ -24,7 +24,9 @@
+ def block_shifr_main(input_string):
+-    input_string = input_string.hex()[:32]
+-    input_string = bytes.fromhex(input_string)
++    hex_str = input_string.hex()
++    if len(hex_str) % 2 != 0:
++        hex_str += '0'
++    input_bytes = bytes.fromhex(hex_str)
+     key_bytes = b"Happy_New_Year_2026"
+     key_int = int.from_bytes(key_bytes, byteorder='big')
+-    encrypted = simple_block_encrypt(input_string, key_int, block_size=16)
++    encrypted = simple_block_encrypt(input_bytes, key_int, block_size=16)
+     return encrypted

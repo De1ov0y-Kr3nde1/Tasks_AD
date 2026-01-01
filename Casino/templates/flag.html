@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Флаг — Royal Casino</title>
+  <style>
+    body {
+      margin: 0;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(255,215,0,0.08), transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(255,215,0,0.08), transparent 30%),
+        linear-gradient(135deg, #0f0c29, #302b63);
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .flag-container {
+      background: rgba(15, 12, 41, 0.95);
+      border: 3px solid gold;
+      border-radius: 15px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 0 40px rgba(212, 175, 55, 0.6);
+      max-width: 600px;
+      width: 90%;
+    }
+    .flag-title {
+      color: gold;
+      font-size: 2em;
+      margin-bottom: 20px;
+      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    }
+    .flag-content {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 20px;
+      border-radius: 10px;
+      font-family: monospace;
+      font-size: 1.5em;
+      letter-spacing: 3px;
+      color: #a9d6e5;
+      margin: 20px 0;
+      border: 1px dashed gold;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #4d869c;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+    .back-link:hover {
+      background: #5fa3c3;
+    }
+  </style>
+</head>
+<body>
+  <div class="flag-container">
+    <h1 class="flag-title">🎉 Поздравляем!</h1>
+    <p>Вы успешно приобрели флаг:</p>
+    <div class="flag-content">{{ flag }}</div>
+    <p>Спасибо за игру в Royal Casino!</p>
+    <a href="/" class="back-link">Вернуться в казино</a>
+  </div>
+</body>
+</html>

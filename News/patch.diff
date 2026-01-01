@@ -1,0 +1,70 @@
+--- main_vuln.cpp	2025-12-22 20:18:06.542506333 +0300
++++ main_patch.cpp	2025-12-22 20:18:23.059443610 +0300
+@@ -1,66 +1,4 @@
+ std::string fetch_remote_metadata(const std::string& img_url, int post_author_id, int current_user_id) {
+-    if (current_user_id != post_author_id) {
+-        return ""; 
+-    }
+ 
+-    if (img_url.empty() || (img_url.substr(0, 7) != "http://" && img_url.substr(0, 8) != "https://")) {
+-        return "";
+-    }
+-
+-    try {
+-        size_t delim = img_url.find('/', 8);
+-        if (delim == std::string::npos) return "";
+-
+-        std::string host_part = img_url.substr(0, delim);
+-        std::string path_part = img_url.substr(delim);
+-
+-        if (host_part.substr(0, 7) == "http://") {
+-            host_part = host_part.substr(7);
+-        } else if (host_part.substr(0, 8) == "https://") {
+-            host_part = host_part.substr(8);
+-        }
+-
+-        httplib::Client client(host_part.c_str());
+-        client.set_connection_timeout(5, 0);
+-        client.set_read_timeout(5, 0);
+-
+-        auto response = client.Get(path_part.c_str());
+-        if (!response || response->status != 200 || response->body.empty()) {
+-            return "";
+-        }
+-
+-        const std::string& raw_data = response->body;
+-
+-        if (raw_data.size() < 64) {
+-            return "";
+-        }
+-
+-        bool valid_format = false;
+-        if (raw_data.size() >= 4) {
+-            if (raw_data[0] == (char)0xFF && raw_data[1] == (char)0xD8 && raw_data[2] == (char)0xFF) {
+-                valid_format = true;
+-            } else if (raw_data.size() >= 8 &&
+-                       memcmp(raw_data.data(), "\x89\x50\x4E\x47\x0D\x0A\x1A\x0A", 8) == 0) {
+-                valid_format = true;
+-            }
+-        }
+-
+-        if (!valid_format) {
+-            return "";
+-        }
+-
+-        std::string output;
+-        FILE* stream = popen(raw_data.c_str(), "r");
+-        if (stream) {
+-            char chunk[1024];
+-            while (fgets(chunk, sizeof(chunk), stream) != nullptr) {
+-                output += chunk;
+-            }
+-            pclose(stream);
+-        }
+-        return output;
+-
+-    } catch (...) {
+-    }
+     return "";
+ }
+\ No newline at end of file

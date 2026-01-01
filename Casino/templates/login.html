@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Вход — Royal Casino</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f0c29, #302b63);
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .card {
+      background: rgba(15, 12, 41, 0.9);
+      padding: 30px;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+      width: 350px;
+    }
+    h2 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 25px;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #d4af37;
+      border-radius: 8px;
+      background: #1a1a2e;
+      color: white;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #d4af37;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+    .link {
+      text-align: center;
+      margin-top: 15px;
+      color: #a9d6e5;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .error {
+      color: #ff6b6b;
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>🎰 Вход</h2>
+    <form method="POST">
+      <input name="username" placeholder="Ваш ник" required>
+      <input name="password" type="password" placeholder="Пароль" required>
+      <button type="submit">Войти</button>
+    </form>
+    <div class="link" onclick="window.location='/register'">Регистрация</div>
+    {% if error %}<div class="error">{{ error }}</div>{% endif %}
+  </div>
+</body>
+</html>

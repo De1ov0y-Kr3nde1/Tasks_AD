@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Магазин — Royal Casino</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f0c29, #302b63);
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(15, 12, 41, 0.9);
+      padding: 25px;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    }
+    h1 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+    .balance {
+      text-align: center;
+      font-size: 1.2em;
+      margin-bottom: 20px;
+      color: gold;
+    }
+    .shop-item {
+      background: rgba(30, 30, 50, 0.6);
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 10px;
+    }
+    .back {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #4d869c;
+      color: white;
+      text-decoration: none;
+      width: fit-content;
+      border-radius: 6px;
+    }
+    .btn {
+      padding: 8px 16px;
+      background: #d4af37;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎁 Магазин</h1>
+    <div class="balance">💰 Баланс: {{ balance }} монет</div>
+
+    <div class="shop-item">
+      <h3>Флаг</h3>
+      <p>Секретный флаг CTF</p>
+      <p>Цена: <b>100 000 монет</b></p>
+      {% if balance >= 100000 %}
+        <a href="/buy_flag" class="btn">Купить</a>
+      {% else %}
+        <button class="btn" disabled>Купить</button>
+      {% endif %}
+    </div>
+
+    <div class="shop-item">
+      <h3>Увеличение шанса на победу</h3>
+      <p>Коэффициент: 100 / количество чисел</p>
+      <p>Цена: <b>5 000 монет</b></p>
+      {% if balance >= 5000 %}
+        <form method="POST" action="/buy_boost" style="display:inline;">
+          <button type="submit" class="btn">Купить</button>
+        </form>
+      {% else %}
+        <button class="btn" disabled>Купить</button>
+      {% endif %}
+    </div>
+
+    <div class="shop-item">
+      <h3>Удвоение следующего выигрыша</h3>
+      <p>Ваш следующий выигрыш будет удвоен!</p>
+      <p>Цена: <b>500 монет</b></p>
+      {% if balance >= 500 %}
+        <form method="POST" action="/buy_double" style="display:inline;">
+          <button type="submit" class="btn">Купить</button>
+        </form>
+      {% else %}
+        <button class="btn" disabled>Купить</button>
+      {% endif %}
+    </div>
+
+    <div class="shop-item">
+      <h3>Дополнительная жизнь</h3>
+      <p>Восстанавливает 100 монет при проигрыше</p>
+      <p>Цена: <b>500 монет</b></p>
+      {% if balance >= 500 %}
+        <form method="POST" action="/buy_extra_life" style="display:inline;">
+          <button type="submit" class="btn">Купить</button>
+        </form>
+      {% else %}
+        <button class="btn" disabled>Купить</button>
+      {% endif %}
+    </div>
+
+    <div class="shop-item">
+      <h3>Премия 1000</h3>
+      <p>При выигрыше +1000 монет</p>
+      <p>Цена: <b>500 монет</b></p>
+      {% if balance >= 500 %}
+        <form method="POST" action="/buy_thousand_bonus" style="display:inline;">
+          <button type="submit" class="btn">Купить</button>
+        </form>
+      {% else %}
+        <button class="btn" disabled>Купить</button>
+      {% endif %}
+    </div>
+
+    <a href="/" class="back">← Вернуться в казино</a>
+  </div>
+</body>
+</html>

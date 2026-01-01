@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Профиль — Royal Casino</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f0c29, #302b63);
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(15, 12, 41, 0.9);
+      padding: 25px;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    }
+    h1 {
+      text-align: center;
+      color: #ffd700;
+      margin-bottom: 20px;
+    }
+    .info {
+      margin: 15px 0;
+      padding: 10px;
+      background: rgba(30, 30, 50, 0.6);
+      border-radius: 10px;
+    }
+    .password-info {
+      background: rgba(212, 175, 55, 0.25);
+      border-left: 3px solid gold;
+      text-align: center;
+    }
+    .password-code {
+      font-family: monospace;
+      font-size: 1.2em;
+      letter-spacing: 2px;
+      color: #ffd700;
+    }
+    .admin-tag {
+      color: gold;
+      font-weight: bold;
+    }
+    .back {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #4d869c;
+      color: white;
+      text-decoration: none;
+      width: fit-content;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>👤 Мой профиль</h1>
+    
+    <div class="info">
+      <strong>Ник:</strong> {{ username }}
+      {% if is_admin %}
+        <span class="admin-tag">[АДМИН]</span>
+      {% endif %}
+    </div>
+    
+    <div class="info password-info">
+      <strong>Ваш пароль:</strong><br>
+      <div class="password-code">{{ plain_password }}</div>
+    </div>
+    
+    <div class="info">
+      <strong>Баланс:</strong> {{ balance }} монет
+    </div>
+    
+    <div class="info">
+      <strong>Статистика:</strong><br>
+      Всего ставок: {{ total_bets }}<br>
+      Выигрышей: {{ wins }}<br>
+      Проигрышей: {{ losses }}
+    </div>
+
+    <a href="/" class="back">← Вернуться в казино</a>
+  </div>
+</body>
+</html>

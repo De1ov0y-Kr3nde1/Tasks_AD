@@ -1,0 +1,6 @@
+main
+data/news.db
+*~
+.DS_Store
+.vscode/
+.DS_Store

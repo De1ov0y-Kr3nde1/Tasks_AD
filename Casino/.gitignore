@@ -1,0 +1,46 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Виртуальные окружения
+venv/
+ENV/
+.env
+.venv
+env/
+
+# IDE / Редакторы
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Логи и БД
+*.log
+*.db
+*.sqlite
+
+# Docker
+.dockerignore
+
+# Временные файлы
+*.tmp
+*.bak
+
+# Компиляция (если есть C/C++)
+*.o
+*.so
+*.exe
+build/
+
+# Секреты и конфиги
+config.json
+secrets.py
+local_settings.py
+
+# Пользовательские загрузки (если pictures/ — не статика!)
+# Раскомментируйте, только если pictures/ содержит динамические файлы:
+# pictures/*
+# !pictures/.gitkeep

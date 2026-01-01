@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Пользователи — Royal Casino</title>
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #0f0c29, #302b63);
+      color: white;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(15, 12, 41, 0.9);
+      padding: 25px;
+      border-radius: 20px;
+      border: 2px solid #d4af37;
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    }
+    h2 {
+      text-align: center;
+      color: #ffd700;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 8px 0;
+      text-align: center;
+    }
+    .admin-tag {
+      color: gold;
+      font-weight: bold;
+    }
+    .back {
+      display: block;
+      margin: 20px auto;
+      padding: 10px 20px;
+      background: #4d869c;
+      color: white;
+      text-decoration: none;
+      width: fit-content;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Все игроки</h2>
+    <ul>
+      {% for user in users %}
+        <li>
+          {{ user.username }}
+          {% if user.is_admin %}<span class="admin-tag">[АДМИН]</span>{% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+    <a href="/" class="back">← Назад в казино</a>
+  </div>
+</body>
+</html>
