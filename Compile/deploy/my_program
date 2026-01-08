@@ -1,0 +1,8 @@
+#!/usr/bin/env python3
+def main():
+    a = 12
+    b = 13
+    print(a + b)
+    return 0
+if __name__ == '__main__':
+    main()
