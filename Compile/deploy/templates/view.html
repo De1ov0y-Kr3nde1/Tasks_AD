@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Python Compiler</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      min-height: 100vh;
+      height: 100%;
+      width: 100%;
+      background-image: 
+        linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url('https://cdn.dribbble.com/userupload/13948045/file/original-7425e80ba1af21a065182491c041dd40.jpg?resize=1600x1200');
+      background-position: 40%;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      padding-top: 120px;
+      padding-bottom: 40px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 28px;
+      text-shadow: 0 0 8px rgba(0,0,0,0.6);
+    }
+
+    textarea {
+      width: 100%;
+      height: 400px;
+      padding: 16px;
+      font-size: 16px;
+      font-family: 'Consolas', 'Courier New', monospace;
+      background: rgba(0, 0, 0, 0.6);
+      color: #4ade80; 
+      border: 1px solid #4ade80;
+      border-radius: 8px;
+      resize: vertical;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #22eeb1;
+      box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.3);
+    }
+
+    .btn-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    button {
+      background: #068f96; 
+      color: white;
+      border: none;
+      padding: 12px 36px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: #2563eb;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    pre#output {
+      margin-top: 25px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 6px;
+      min-height: 24px;
+      color: #fbbf24; 
+      font-family: monospace;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐍 Онлайн Python → ELF Компилятор</h1>
+    <textarea id="code" spellcheck="false" placeholder="Напишите ваш Python-код здесь..."></textarea>
+    <div class="btn-container">
+      <button onclick="compileCode()">Скомпилировать</button>
+    </div>
+    <pre id="output"></pre>
+  </div>
+
+  <script>
+    async function compileCode() {
+      const code = document.getElementById('code').value;
+      const output = document.getElementById('output');
+      output.textContent = "Компиляция...";
+
+      try {
+        const res = await fetch('http://192.168.1.20/compile', {
+          method: 'POST',
+          body: code
+        });
+
+        if (res.ok) {
+          const blob = await res.blob();
+          const url = URL.createObjectURL(blob);
+          output.innerHTML = `✅ Готово! <a href="${url}" download="program" style="color:#60a5fa;">Скачать ELF</a>`;
+        } else {
+          const err = await res.text();
+          output.textContent = `❌ Ошибка: ${err}`;
+        }
+      } catch (e) {
+        output.textContent = `⚠️ Ошибка сети: ${e.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
