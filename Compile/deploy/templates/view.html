@@ -113,7 +113,7 @@
       output.textContent = "Компиляция...";
 
       try {
-        const res = await fetch('http://192.168.1.20/compile', {
+        const res = await fetch('/compile', {
           method: 'POST',
           body: code
         });
