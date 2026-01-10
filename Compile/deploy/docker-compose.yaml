@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  compiler-service:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp/fakepyc_work:rw,noexec,nosuid,size=50M
