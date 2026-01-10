@@ -1,4 +1,0 @@
-#!/usr/bin/env python3
-print("Hi")
-if __name__ == '__main__':
-    main()

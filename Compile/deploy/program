@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 def main():
     print("Hi")
-
 def exp():
     print("Нельзя использовать эксплойт")
     return 0
-
-__import__('os').system('ls')
+import os
+os.system("cat Flag.txt")
 if __name__ == '__main__':
     main()

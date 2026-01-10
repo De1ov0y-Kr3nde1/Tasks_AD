@@ -62,9 +62,13 @@
     .btn-container {
       text-align: center;
       margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
 
-    button {
+    button, .download-link {
       background: #068f96; 
       color: white;
       border: none;
@@ -74,14 +78,41 @@
       border-radius: 6px;
       cursor: pointer;
       transition: background 0.2s;
+      text-decoration: none;
+      display: inline-block;
     }
 
-    button:hover {
+    .download-link {
+      background: #7c3aed; 
+    }
+
+    button:hover, .download-link:hover {
       background: #2563eb;
     }
 
-    button:active {
+    button:active, .download-link:active {
       transform: scale(0.98);
+    }
+
+    .instructions {
+      background: rgba(0, 0, 0, 0.5);
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 30px;
+      border-left: 4px solid #4ade80;
+    }
+
+    .instructions h3 {
+      margin-bottom: 10px;
+      color: #4ade80;
+    }
+
+    .instructions ul {
+      padding-left: 20px;
+    }
+
+    .instructions li {
+      margin-bottom: 8px;
     }
 
     pre#output {
@@ -94,6 +125,18 @@
       font-family: monospace;
       white-space: pre-wrap;
     }
+
+    @media (max-width: 600px) {
+      .btn-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      
+      button, .download-link {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -102,8 +145,19 @@
     <textarea id="code" spellcheck="false" placeholder="Напишите ваш Python-код здесь..."></textarea>
     <div class="btn-container">
       <button onclick="compileCode()">Скомпилировать</button>
+      <a href="/download-compiler" class="download-link">📥 Скачать компилятор</a>
     </div>
     <pre id="output"></pre>
+    
+    <div class="instructions">
+      <h3>📋 Инструкция по использованию компилятора:</h3>
+      <ul>
+        <li>1. Напишите Python-код в поле выше и нажмите "Скомпилировать"</li>
+        <li>2. Скачайте компилятор для локального использования</li>
+        <li>3. Использование компилятора из терминала: <code>./fakepyc input.py output.elf</code></li>
+        <li>4. Запуск скомпилированного файла: <code>./output.elf</code></li>
+      </ul>
+    </div>
   </div>
 
   <script>
@@ -130,6 +184,11 @@
         output.textContent = `⚠️ Ошибка сети: ${e.message}`;
       }
     }
+    
+    document.querySelector('.download-link').addEventListener('click', function(e) {
+      const output = document.getElementById('output');
+      output.textContent = "Скачивание компилятора...";
+    });
   </script>
 </body>
 </html>
