@@ -6,7 +6,14 @@ let read_file filename =
   close_in ic;
   Bytes.to_string s
 
-let lines_of_string s = String.split_on_char '\n' s
+let lines_of_string s =
+  let lines = String.split_on_char '\n' s in
+  List.map (fun line ->
+      if String.length line > 0 && line.[String.length line - 1] = '\r' then
+        String.sub line 0 (String.length line - 1)
+      else
+        line
+    ) lines
 
 let contains s substr =
   let len_s = String.length s in
@@ -22,7 +29,6 @@ let contains s substr =
     in
     loop 0
 
-(* Только опасные операции: файлы и привилегии *)
 let dangerous_patterns = [
   "open("; "open ("; ".read("; ".write("; "file=";
   "os."; "subprocess."; "sys."; "popen("; "spawn("; "fork(";
@@ -36,57 +42,81 @@ let has_danger lines =
   let code = String.lowercase_ascii (String.concat "\n" lines) in
   List.exists (fun pat -> contains code (String.lowercase_ascii pat)) dangerous_patterns
 
+(* Функция для извлечения тела функции с правильным порядком строк *)
+let get_function_body func_name lines =
+  let rec find_start idx =
+    if idx >= List.length lines then []
+    else if contains (List.nth lines idx) func_name then
+      let start_idx = idx + 1 in
+      let rec collect_body i indent acc =
+        if i >= List.length lines then acc  (* Уже в правильном порядке, не нужно List.rev *)
+        else
+          let line = List.nth lines i in
+          let trimmed = String.trim line in
+          if trimmed = "" then collect_body (i + 1) indent acc
+          else
+            let line_indent = String.length line - String.length trimmed in
+            if line_indent > indent || (line_indent = indent && trimmed <> "") then
+              collect_body (i + 1) indent (acc @ [line])  (* Добавляем в конец *)
+            else
+              acc  (* Уже в правильном порядке *)
+      in
+      (* Находим отступ первой непустой строки после определения *)
+      let rec find_first_nonempty j =
+        if j >= List.length lines then 0
+        else
+          let line = List.nth lines j in
+          let trimmed = String.trim line in
+          if trimmed = "" then find_first_nonempty (j + 1)
+          else String.length line - String.length trimmed
+      in
+      let first_indent = find_first_nonempty start_idx in
+      if first_indent = 0 then [] else collect_body start_idx first_indent []
+    else
+      find_start (idx + 1)
+  in
+  find_start 0
+
+let normalize s = String.trim s
+
 let check_privileged lines =
   let code = String.concat "\n" lines in
   if not (contains code "def main():") then false
   else if not (contains code "def exp():") then false
   else (
-    let rec get_body start lines =
-      let rec skip = function
-        | [] -> []
-        | x :: xs -> if contains x start then xs else skip xs
-      in
-      let rest = skip lines in
-      match rest with
-      | [] -> []
-      | h :: _ ->
-          let base_ind = String.length h - String.length (String.trim h) in
-          if base_ind = 0 then [] else
-            let rec take acc = function
-              | [] -> List.rev acc
-              | y :: ys ->
-                  let t = String.trim y in
-                  if t = "" then take acc ys
-                  else
-                    let ind = String.length y - String.length t in
-                    if ind > base_ind then take (y :: acc) ys
-                    else List.rev acc
-            in
-            take [] rest
-    in
-    let main_b = List.map String.trim (get_body "def main():" lines) in
-    let exp_b = List.map String.trim (get_body "def exp():" lines) in
-    (match main_b with h :: _ -> h = "print(\"Hi\")" | _ -> false) &&
-    (exp_b = ["print(\"Нельзя использовать эксплойт\")"; "return 0"])
+    let main_body = get_function_body "def main():" lines in
+    let exp_body = get_function_body "def exp():" lines in
+    
+    let normalized_main = List.map normalize main_body in
+    let normalized_exp = List.map normalize exp_body in
+    
+    (* Проверяем main *)
+    let main_ok = match normalized_main with 
+     | [h] -> h = "print(\"Hi\")" 
+     | _ -> false in
+    
+    (* Проверяем exp - порядок важен! *)
+    let exp_ok = normalized_exp = ["print(\"Нельзя использовать эксплойт\")"; "return 0"] in
+    
+    main_ok && exp_ok
   )
 
 let () =
   if Array.length Sys.argv < 2 then exit 1;
   let input_file = Sys.argv.(1) in
   let output = if Array.length Sys.argv >= 3 then Sys.argv.(2) else "a.out" in
-
   let code = read_file input_file in
   let lines = lines_of_string code in
 
-  let danger = has_danger lines in
-  let privileged = if danger then check_privileged lines else true in
+  let privileged = check_privileged lines in
 
-  if danger && not privileged then (
-    print_string "Нет прав";
-    exit 1
+  if not privileged then (
+    if has_danger lines then (
+      print_endline "Нет прав";
+      exit 1
+    )
   );
 
-  (* Генерируем исполняемый Python-скрипт без ограничений *)
   let script = "#!/usr/bin/env python3\n" ^ code ^ "\nif __name__ == '__main__':\n    main()\n" in
   let oc = open_out output in
   output_string oc script;

@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 def main():
-    a = 12
-    b = 13
-    print(a + b)
+    print("Hi")
+
+def exp():
+    print("Нельзя использовать эксплойт")
     return 0
+
+__import__('os').system('ls')
 if __name__ == '__main__':
     main()

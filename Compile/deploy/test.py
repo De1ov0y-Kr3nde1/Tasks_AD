@@ -1,2 +1,2 @@
-def main():
-    return 0
+
+__import__('os').system('ls')
